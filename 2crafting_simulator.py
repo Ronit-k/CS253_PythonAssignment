@@ -1,23 +1,23 @@
-def calculate_raw_materials(target_item, target_item_quantity, recipes):
+def calculate_raw_materials(item, quantity, recipes):
     """ 
     Args:
-        target_item (str): The name of the item to craft.
-        target_item_quantity (int): The desired quantity of the item.
+        item (str): The name of the item to craft.
+        quantity (int): The desired quantity of the item.
         recipes (dict): A nested dictionary of crafting recipes.
         
     Returns:
         dict: A dictionary containing the total base raw materials and their quantities.
     """
     # base case, where the item itself is a raw material
-    if target_item not in recipes:
-        return {target_item: target_item_quantity}
+    if item not in recipes:
+        return {item: quantity}
     
     total_materials = {}
     
-    recipe = recipes[target_item]
-    for component, component_quantity_needed_per_target_item in recipe.items():
-        # Total amount of component needed for the given quantity of 'target_item'
-        total_component_needed = component_quantity_needed_per_target_item * target_item_quantity
+    recipe = recipes[item]
+    for component, component_quantity_needed_per_item in recipe.items():
+        # Total amount of component needed for the given quantity of 'item'
+        total_component_needed = component_quantity_needed_per_item * quantity
         
         # Recursively find the raw materials for this component
         raw_materials_for_component = calculate_raw_materials(component, total_component_needed, recipes)
