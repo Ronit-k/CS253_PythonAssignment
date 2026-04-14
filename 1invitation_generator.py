@@ -8,10 +8,10 @@ def format_line(text, width = 46):
 
 def generate_invitations(guests, details):
     """
+    Generates ASCII invitations for a list of guests.
     Args:
         guests (list): A list of dictionaries, where each dictionary contains 'Name', 'Affiliation', and 'Email'.
         details (dict): A dictionary containing 'Date', 'Venue', and 'Schedule'.
-        
     Returns:
         dict: A dictionary where keys are guests' email addresses and values are their ASCII invitation strings.
     """

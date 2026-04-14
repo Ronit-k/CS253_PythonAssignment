@@ -1,5 +1,6 @@
 def calculate_raw_materials(item, quantity, recipes):
     """ 
+    Calculates the total base raw materials required to craft a given quantity of an item.
     Args:
         item (str): The name of the item to craft.
         quantity (int): The desired quantity of the item.
@@ -8,7 +9,7 @@ def calculate_raw_materials(item, quantity, recipes):
     Returns:
         dict: A dictionary containing the total base raw materials and their quantities.
     """
-    # base case, where the item itself is a raw material
+    # Base case: where the item itself is a raw material
     if item not in recipes:
         return {item: quantity}
     
