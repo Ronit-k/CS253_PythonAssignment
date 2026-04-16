@@ -81,12 +81,15 @@ class Train:
 # 6. Network Management
 class RailwayNetwork:
     def __init__(self):
-        self.graph = {} # we are using a dictionary to store stations and its neighbours with the distance between them (adjacency list)
+        self.graph = {} # Using a dictionary to store stations and its neighbours with the distance between them (adjacency list)
 
     def add_link(self, station_A, station_B, distance):
-        # We store distances in a simple nested dictionary
+        # Making the graph undirected by linking both ways
         if station_A not in self.graph: self.graph[station_A] = {}
+        if station_B not in self.graph: self.graph[station_B] = {}
+        
         self.graph[station_A][station_B] = distance
+        self.graph[station_B][station_A] = distance
 
     def get_distance(self, station_A, station_B):
         return self.graph.get(station_A, {}).get(station_B, 0)
@@ -98,14 +101,19 @@ def run_delivery_schedule(train, network, route_list):
     # Iterate through the stations in the route
     for i, current_station in enumerate(route_list):
         
-        # --- Arrival Logic ---
-        # Find and uncouple cars that belong at this station
+        # Arrival Logic
+        # Find what needs to be removed
+        cars_to_remove = []
         for item in train.stock_list:
-            if isinstance(item, FreightCar) and item.destination == current_station: #check if the item is a freight car and its destination is the current station
-                train.uncouple(item.id_str) # if yes then remove the car from the train
+            if isinstance(item, FreightCar) and item.destination == current_station:
+                cars_to_remove.append(item.id_str)
+
+        # Actually remove them, this way ensures that we don't skip any items while removing
+        for stock_id in cars_to_remove:
+            train.uncouple(stock_id)
         
 
-        # --- Departure Logic ---
+        # Departure Logic
         # If there is a next station, calculate travel
         if i + 1 < len(route_list):
             next_station = route_list[i + 1]
@@ -134,15 +142,9 @@ if __name__ == "__main__":
     train.couple(FreightCar("C1", empty_weight=20, cargo_weight=80, destination="Kanpur"))
     train.couple(FreightCar("C2", empty_weight=20, cargo_weight=180, destination="Prayagraj"))
     
-    # Train weight = 100(L) + 100(C1) + 200(C2) = 400. Capacity = 500. Valid.
-    # Delhi -> Kanpur: 400km * 400 tons * 0.01 = 1600 liters.
-    # At Kanpur, C1 is uncoupled. New weight = 100(L) + 200(C2) = 300.
-    # Kanpur -> Prayagraj: 200km * 300 tons * 0.01 = 600 liters.
-    # Total = 1600 + 600 = 2200.0
-    
     try:
         total_fuel = run_delivery_schedule(train, net, ["Delhi", "Kanpur", "Prayagraj"])
         print(f"Total fuel consumed: {total_fuel}")
-        # Expecting 2200.0
+        # Output: 2200.0
     except PhysicsConstraintError as e:
         print(f"Physics Error: {e}")

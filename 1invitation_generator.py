@@ -4,7 +4,7 @@ def format_line(text, width = 46):
     
     lpadding = (width - len(text)) // 2 # Calculates the left padding
     rpadding = width - len(text) - lpadding # Calculates the right padding
-    return f"* {' ' * lpadding}{text}{' ' * rpadding} *" # Returns the formatted line
+    return f"* {' ' * lpadding}{text}{' ' * rpadding} *" # Returns the formatted line '* ' + ' ' * lpadding + text + ' ' * rpadding + ' *'
 
 def generate_invites(guest_list, event_details):
     """

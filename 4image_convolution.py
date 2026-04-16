@@ -1,4 +1,5 @@
 import numpy as np
+
 def sum_prod(region, kernel):
     total = 0
     for i in range(region.shape[0]):
