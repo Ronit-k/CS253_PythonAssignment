@@ -12,13 +12,13 @@ def find_safe_route(graph, start, end, blocked_nodes):
         tuple: (list of node indices for the shortest path, total travel time).
                Return ([], -1) if no path exists.
     """
-
-    # Base case: if the start and end nodes are the same
-    if start == end:
-        return ([start], 0)
     # Edge case: if the start or end node is blocked
     if start in blocked_nodes or end in blocked_nodes:
         return ([], -1)
+    # Base case: if the start and end nodes are the same
+    if start == end:
+        return ([start], 0)
+
         
     n = len(graph)
 

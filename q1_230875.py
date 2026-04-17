@@ -37,7 +37,7 @@ def generate_invites(guest_list, event_details):
             line1,
             line2,
             empty_line,
-            format_line(f"Dear {name}"),
+            format_line(f"Dear {name},"),
             format_line(affiliation),
             empty_line,
             format_line(date),
